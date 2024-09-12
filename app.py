@@ -14,6 +14,9 @@ st.set_page_config(page_title="US Risk Dashboard", layout="wide")
 st.markdown(
     """
     <style>
+    body {
+        background-color: #f4f4f4;
+    }
     .logo {
         position: absolute;
         top: 0;
@@ -23,7 +26,7 @@ st.markdown(
     }
     .header {
         text-align: center;
-        margin-top: 120px;
+        margin-top: 20px;
         margin-bottom: 20px;
     }
     .main-content {
@@ -31,28 +34,32 @@ st.markdown(
         flex-direction: row;
     }
     .metrics-container {
-        flex: 0.3;  # Width of the KPI container
-        padding: 10px;
+        flex: 0.3;  /* Width of the KPI container */
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     .map-container {
-        flex: 0.7;  # Width of the map container
+        flex: 0.7;  /* Width of the map container */
         padding-left: 10px;
     }
     .metrics-box {
         background-color: #f5f5f5;
-        padding: 10px;
-        margin-bottom: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
         border-radius: 8px;
         text-align: center;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.1);
     }
     .metrics-box h2 {
         margin: 0;
-        font-size: 14px;
+        font-size: 16px;
         color: #333;
     }
     .metrics-box p {
         margin: 5px 0 0;
-        font-size: 16px;
+        font-size: 20px;
         font-weight: bold;
         color: #007BFF;
     }
@@ -161,87 +168,4 @@ def create_map(view_type, risk_type):
         legend_name = "Earthquake Risk Score"
     else:
         risk_column = "Flood_Risk_Score"
-        legend_name = "Flood Risk Score"
-
-    if view_type == "State":
-        folium.Choropleth(
-            geo_data=us_states_risk.__geo_interface__,
-            name=f"State {risk_type} Risk",
-            data=us_states_risk,
-            columns=["NAME", risk_column],
-            key_on="feature.properties.NAME",
-            fill_color="RdYlGn_r",  # Reversed: Red for high risk, Green for low risk
-            fill_opacity=0.7,
-            line_opacity=0.2,
-            legend_name=legend_name,
-            threshold_scale=[0, 1, 3, 5, 7, 10]
-        ).add_to(m)
-
-        folium.GeoJson(
-            us_states_risk.__geo_interface__,
-            name="State Tooltips",
-            style_function=lambda feature: {
-                'fillColor': 'red' if feature['properties'][risk_column] > 5 else 'green',
-                'color': 'black',
-                'weight': 0.5,
-                'fillOpacity': 0.6,
-            },
-            tooltip=GeoJsonTooltip(
-                fields=['NAME', risk_column],
-                aliases=['State:', f'{risk_type} Risk Score:'],
-                localize=True
-            )
-        ).add_to(m)
-
-    elif view_type == "County":
-        folium.Choropleth(
-            geo_data=us_counties_risk.__geo_interface__,
-            name=f"County {risk_type} Risk",
-            data=us_counties_risk,
-            columns=["NAME", risk_column],
-            key_on="feature.properties.NAME",
-            fill_color="RdYlGn_r",  # Reversed: Red for high risk, Green for low risk
-            fill_opacity=0.7,
-            line_opacity=0.2,
-            legend_name=legend_name,
-            threshold_scale=[0, 1, 3, 5, 7, 10]
-        ).add_to(m)
-
-        folium.GeoJson(
-            us_counties_risk.__geo_interface__,
-            name="County Tooltips",
-            style_function=lambda feature: {
-                'fillColor': 'red' if feature['properties'][risk_column] > 5 else 'green',
-                'color': 'black',
-                'weight': 0.5,
-                'fillOpacity': 0.6,
-            },
-            tooltip=GeoJsonTooltip(
-                fields=['NAME', risk_column],
-                aliases=['County:', f'{risk_type} Risk Score:'],
-                localize=True
-            )
-        ).add_to(m)
-
-    folium.LayerControl().add_to(m)
-
-    return m
-
-# Display the map
-m = create_map(view_type, risk_type)
-st_folium(m, width=700, height=500)
-
-st.markdown("</div>", unsafe_allow_html=True)  # Close map container
-st.markdown("</div>", unsafe_allow_html=True)  # Close main content
-
-# Customer Sales Trend line chart at the bottom
-years = [2020, 2021, 2022, 2023]
-customers_per_year = np.random.randint(100000, 500000, size=len(years))
-
-fig, ax = plt.subplots(figsize=(8, 4))
-ax.plot(years, customers_per_year)
-ax.set_xlabel('Year')
-ax.set_ylabel('Number of Customers')
-ax.set_title('Customer Sales Trend')
-
-st.pyplot(fig)
+        legend
