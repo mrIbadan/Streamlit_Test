@@ -234,4 +234,17 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
 # Customer sales trend line chart
-st.markdown("<h3 style='text-align:
+st.markdown("<h3 style='text-align: center;'>Customer Sales Trend</h3>", unsafe_allow_html=True)
+
+# Generate random customer data for line chart
+years = [2020, 2021, 2022, 2023]
+customers_per_year = np.random.randint(100000, 500000, size=len(years))
+
+# Create line chart for customer trend
+fig, ax = plt.subplots()
+ax.plot(years, customers_per_year, marker='o', linestyle='-', color='b')
+ax.set_xlabel('Year')
+ax.set_ylabel('Number of Customers')
+ax.set_title('Customer Sales Trend Over Time')
+
+st.pyplot(fig)
