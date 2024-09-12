@@ -210,4 +210,22 @@ def maps():
 
     # Display the map
     m = create_map(view_type, risk_type)
-    st_folium(m, width
+    st_folium(m, width=725, height=500)
+
+def customer_sales_trend():
+    st.title("Customer Sales Trend")
+    # Generate random data for the customer sales trend
+    years = [2020, 2021, 2022, 2023]
+    customers_per_year = np.random.randint(100000, 500000, size=len(years))
+
+    # Create a line chart for customer sales trend
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.plot(years, customers_per_year, marker='o')
+    ax.set_xlabel('Year')
+    ax.set_ylabel('Number of Customers')
+    ax.set_title('Customer Sales Trend')
+
+    st.pyplot(fig)
+
+if __name__ == "__main__":
+    main()
