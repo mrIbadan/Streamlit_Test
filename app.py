@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 # Set page layout
 st.set_page_config(page_title="US Risk Dashboard", layout="wide")
 
-# CSS for layout and styling
+# CSS for layout and styling adjustments
 st.markdown(
     """
     <style>
@@ -18,41 +18,40 @@ st.markdown(
         position: absolute;
         top: 0;
         right: 20px;
-        width: 120px;
+        width: 100px;
         z-index: 100;
     }
     .header {
         text-align: center;
         margin-top: 120px;
-        margin-bottom: 40px;
+        margin-bottom: 20px;
     }
     .main-content {
         display: flex;
     }
     .sidebar-content {
-        flex: 0.5;
-        padding: 20px;
-        max-width: 300px;
+        flex: 0.3;
+        padding: 10px;
     }
     .map-container {
-        flex-grow: 2;
-        padding-left: 20px;
+        flex-grow: 1;
+        padding-left: 10px;
     }
     .metrics-box {
-        background-color: #e1e5eb;
-        padding: 15px;
+        background-color: #f5f5f5;
+        padding: 10px;
         margin-bottom: 10px;
-        border-radius: 10px;
+        border-radius: 8px;
         text-align: center;
     }
     .metrics-box h2 {
         margin: 0;
-        font-size: 18px;
+        font-size: 14px;
         color: #333;
     }
     .metrics-box p {
         margin: 5px 0 0;
-        font-size: 20px;
+        font-size: 16px;
         font-weight: bold;
         color: #007BFF;
     }
@@ -85,10 +84,10 @@ roi = np.random.uniform(5, 20)  # Random ROI %
 customers = np.random.randint(100000, 500000)  # Random number of customers
 revenue = np.random.uniform(1, 5) * 1e6  # Random Revenue in $
 
-# Main content area
+# Main content area with KPI boxes on the left and map on the right
 st.markdown("<div class='main-content'>", unsafe_allow_html=True)
 
-# Display KPI boxes on the left
+# Display KPI boxes on the left (smaller size)
 st.markdown("<div class='sidebar-content'>", unsafe_allow_html=True)
 
 st.markdown(
@@ -235,16 +234,4 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
 # Customer sales trend line chart
-st.markdown("<h3 style='text-align: left;'>Customer Sales Trend</h3>", unsafe_allow_html=True)
-
-# Sample line chart data
-dates = pd.date_range(start='1/1/2022', periods=12, freq='M')
-customers = np.random.randint(50000, 200000, size=12)
-
-fig, ax = plt.subplots(figsize=(10, 4))
-ax.plot(dates, customers, marker='o', color='#007BFF')
-ax.set_title('Customer Sales Trend', fontsize=16)
-ax.set_xlabel('Month')
-ax.set_ylabel('Number of Customers')
-
-st.pyplot(fig)
+st.markdown("<h3 style='text-align:
