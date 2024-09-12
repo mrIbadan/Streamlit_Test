@@ -5,23 +5,29 @@ import geopandas as gpd
 import folium
 from folium.features import GeoJsonTooltip
 from streamlit_folium import st_folium
+import matplotlib.pyplot as plt
 
-# Set page layout
-st.set_page_config(
-    page_title='US Risk Dashboard',
-    page_icon='✅',
-    layout='wide'
-)
+def main():
+    st.set_page_config(
+        page_title='US Risk Dashboard',
+        page_icon='✅',
+        layout='wide'
+    )
 
-# Sidebar navigation
-st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Dashboard", "Maps", "Customer Sales Trend"])
+    st.sidebar.title("Navigation")
+    pages = {
+        "Dashboard": dashboard,
+        "Maps": maps,
+        "Customer Sales Trend": customer_sales_trend,
+    }
+    selection = st.sidebar.radio("Go to", list(pages.keys()))
+    pages[selection]()
 
-if page == "Dashboard":
+def dashboard():
     st.markdown("## KPI First Row")
 
     # KPI 1
-    kpi1, kpi2, kpi3 = st.beta_columns(3)
+    kpi1, kpi2, kpi3 = st.columns(3)  # Updated to st.columns()
 
     with kpi1:
         st.markdown("**First KPI**")
@@ -43,7 +49,7 @@ if page == "Dashboard":
     st.markdown("## KPI Second Row")
 
     # KPI 2
-    kpi01, kpi02, kpi03, kpi04, kpi05 = st.beta_columns(5)
+    kpi01, kpi02, kpi03, kpi04, kpi05 = st.columns(5)  # Updated to st.columns()
 
     with kpi01:
         st.markdown("**Another 1st KPI**")
@@ -75,7 +81,7 @@ if page == "Dashboard":
     st.markdown("## Chart Layout")
 
     # Chart layout
-    chart1, chart2 = st.beta_columns(2)
+    chart1, chart2 = st.columns(2)  # Updated to st.columns()
 
     with chart1:
         chart_data = pd.DataFrame(np.random.randn(20, 3), columns=['a', 'b', 'c'])
@@ -85,7 +91,7 @@ if page == "Dashboard":
         chart_data = pd.DataFrame(np.random.randn(2000, 3), columns=['a', 'b', 'c'])
         st.line_chart(chart_data)
 
-elif page == "Maps":
+def maps():
     st.markdown("## Map Layout")
 
     # Sidebar for year filter
