@@ -10,10 +10,16 @@ import matplotlib.pyplot as plt
 # Set page layout
 st.set_page_config(page_title="US Risk Dashboard", layout="wide")
 
-# CSS for layout and styling adjustments
+# CSS for layout, styling adjustments, and background image
 st.markdown(
     """
     <style>
+    body {
+        background-image: url('https://images.unsplash.com/photo-1516116216624-e9bf5e3c3b9b');  /* Replace with your image URL */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
     .logo {
         position: absolute;
         top: 0;
@@ -25,20 +31,23 @@ st.markdown(
         text-align: center;
         margin-top: 120px;
         margin-bottom: 20px;
+        color: #FFFFFF;
     }
     .main-content {
         display: flex;
+        flex-direction: row;
+        color: #FFFFFF;
     }
-    .sidebar-content {
+    .metrics-container {
         flex: 0.3;
         padding: 10px;
     }
     .map-container {
-        flex-grow: 1;
+        flex: 0.7;
         padding-left: 10px;
     }
     .metrics-box {
-        background-color: #f5f5f5;
+        background-color: rgba(245, 245, 245, 0.8);
         padding: 10px;
         margin-bottom: 10px;
         border-radius: 8px;
@@ -65,8 +74,8 @@ st.markdown(
     """
     <div class="header">
         <img src="http://ormiro.com/cdn/shop/articles/backup-article-607842304304.jpg?v=1721254571" class="logo">
-        <h1 style="color:#007BFF;">US Earthquake and Flood Risk Dashboard</h1>
-        <h4 style="color:#6c757d;">Interactive map of earthquake and flood risks by state and county</h4>
+        <h1>US Earthquake and Flood Risk Dashboard</h1>
+        <h4>Interactive map of earthquake and flood risks by state and county</h4>
     </div>
     """,
     unsafe_allow_html=True
@@ -84,11 +93,11 @@ roi = np.random.uniform(5, 20)  # Random ROI %
 customers = np.random.randint(100000, 500000)  # Random number of customers
 revenue = np.random.uniform(1, 5) * 1e6  # Random Revenue in $
 
-# Main content area with KPI boxes on the left and map on the right
+# Main content area with KPI boxes and map side by side
 st.markdown("<div class='main-content'>", unsafe_allow_html=True)
 
 # Display KPI boxes on the left (smaller size)
-st.markdown("<div class='sidebar-content'>", unsafe_allow_html=True)
+st.markdown("<div class='metrics-container'>", unsafe_allow_html=True)
 
 st.markdown(
     f"""
@@ -111,6 +120,8 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+st.markdown("</div>", unsafe_allow_html=True)  # Close metrics container
 
 # Function to generate and return a Folium map
 def create_map(view_type, risk_type):
@@ -228,23 +239,16 @@ risk_type = st.sidebar.selectbox('Select Risk Type', ['Earthquake', 'Flood'])
 m = create_map(view_type, risk_type)
 st_folium(m, width=700, height=500)
 
-st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)  # Close map container
 
-# Close main content div
-st.markdown("</div>", unsafe_allow_html=True)
-
-# Customer sales trend line chart
-st.markdown("<h3 style='text-align: center;'>Customer Sales Trend</h3>", unsafe_allow_html=True)
-
-# Generate random customer data for line chart
+# Customer Sales Trend line chart at the bottom
 years = [2020, 2021, 2022, 2023]
 customers_per_year = np.random.randint(100000, 500000, size=len(years))
 
-# Create line chart for customer trend
-fig, ax = plt.subplots()
-ax.plot(years, customers_per_year, marker='o', linestyle='-', color='b')
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.plot(years, customers_per_year)
 ax.set_xlabel('Year')
 ax.set_ylabel('Number of Customers')
-ax.set_title('Customer Sales Trend Over Time')
+ax.set_title('Customer Sales Trend')
 
 st.pyplot(fig)
