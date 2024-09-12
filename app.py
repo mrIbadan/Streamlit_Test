@@ -10,16 +10,10 @@ import matplotlib.pyplot as plt
 # Set page layout
 st.set_page_config(page_title="US Risk Dashboard", layout="wide")
 
-# CSS for layout, styling adjustments, and background image
+# CSS for layout and styling adjustments
 st.markdown(
     """
     <style>
-    body {
-        background-image: url('https://images.unsplash.com/photo-1516116216624-e9bf5e3c3b9b');  /* Replace with your image URL */
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-    }
     .logo {
         position: absolute;
         top: 0;
@@ -31,23 +25,24 @@ st.markdown(
         text-align: center;
         margin-top: 120px;
         margin-bottom: 20px;
-        color: #FFFFFF;
     }
     .main-content {
         display: flex;
         flex-direction: row;
-        color: #FFFFFF;
     }
     .metrics-container {
         flex: 0.3;
         padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
     .map-container {
         flex: 0.7;
         padding-left: 10px;
     }
     .metrics-box {
-        background-color: rgba(245, 245, 245, 0.8);
+        background-color: #f5f5f5;
         padding: 10px;
         margin-bottom: 10px;
         border-radius: 8px;
@@ -74,8 +69,8 @@ st.markdown(
     """
     <div class="header">
         <img src="http://ormiro.com/cdn/shop/articles/backup-article-607842304304.jpg?v=1721254571" class="logo">
-        <h1>US Earthquake and Flood Risk Dashboard</h1>
-        <h4>Interactive map of earthquake and flood risks by state and county</h4>
+        <h1 style="color:#007BFF;">US Earthquake and Flood Risk Dashboard</h1>
+        <h4 style="color:#6c757d;">Interactive map of earthquake and flood risks by state and county</h4>
     </div>
     """,
     unsafe_allow_html=True
@@ -122,6 +117,11 @@ st.markdown(
 )
 
 st.markdown("</div>", unsafe_allow_html=True)  # Close metrics container
+
+# Map on the right side
+st.markdown("<div class='map-container'>", unsafe_allow_html=True)
+view_type = st.sidebar.selectbox('Select View Type', ['State', 'County'])
+risk_type = st.sidebar.selectbox('Select Risk Type', ['Earthquake', 'Flood'])
 
 # Function to generate and return a Folium map
 def create_map(view_type, risk_type):
@@ -230,16 +230,13 @@ def create_map(view_type, risk_type):
 
     return m
 
-# Map on the right side
-st.markdown("<div class='map-container'>", unsafe_allow_html=True)
-view_type = st.sidebar.selectbox('Select View Type', ['State', 'County'])
-risk_type = st.sidebar.selectbox('Select Risk Type', ['Earthquake', 'Flood'])
-
 # Display the map
 m = create_map(view_type, risk_type)
 st_folium(m, width=700, height=500)
 
 st.markdown("</div>", unsafe_allow_html=True)  # Close map container
+
+st.markdown("</div>", unsafe_allow_html=True)  # Close main content
 
 # Customer Sales Trend line chart at the bottom
 years = [2020, 2021, 2022, 2023]
