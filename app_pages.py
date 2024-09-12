@@ -18,7 +18,7 @@ def main():
     pages = {
         "Dashboard": dashboard,
         "Maps": maps,
-        "Customer Sales Trend": customer_sales_trend,
+        "Customer Sales Trend": customer_sales_trend,  # Added customer_sales_trend
     }
     selection = st.sidebar.radio("Go to", list(pages.keys()))
     pages[selection]()
@@ -27,7 +27,7 @@ def dashboard():
     st.markdown("## KPI First Row")
 
     # KPI 1
-    kpi1, kpi2, kpi3 = st.columns(3)
+    kpi1, kpi2, kpi3 = st.columns(3)  # Use st.columns instead of st.beta_columns
 
     with kpi1:
         st.markdown("**First KPI**")
@@ -49,7 +49,7 @@ def dashboard():
     st.markdown("## KPI Second Row")
 
     # KPI 2
-    kpi01, kpi02, kpi03, kpi04, kpi05 = st.columns(5)
+    kpi01, kpi02, kpi03, kpi04, kpi05 = st.columns(5)  # Use st.columns instead of st.beta_columns
 
     with kpi01:
         st.markdown("**Another 1st KPI**")
@@ -81,7 +81,7 @@ def dashboard():
     st.markdown("## Chart Layout")
 
     # Chart layout
-    chart1, chart2 = st.columns(2)
+    chart1, chart2 = st.columns(2)  # Use st.columns instead of st.beta_columns
 
     with chart1:
         chart_data = pd.DataFrame(np.random.randn(20, 3), columns=['a', 'b', 'c'])
@@ -210,14 +210,4 @@ def maps():
 
     # Display the map
     m = create_map(view_type, risk_type)
-    st_folium(m, width=700, height=500)
-
-# Customer Sales Trend
-elif page == "Customer Sales Trend":
-    st.title("Customer Sales Trend")
-    # Generate random data for the customer sales trend
-    years = [2020, 2021, 2022, 2023]
-    customers_per_year = np.random.randint(100000, 500000, size=len(years))
-
-    # Create a line chart for customer sales trend
-    fig, ax = plt
+    st_folium(m, width
