@@ -27,7 +27,7 @@ def dashboard():
     st.markdown("## KPI First Row")
 
     # KPI 1
-    kpi1, kpi2, kpi3 = st.columns(3)  # Updated to st.columns()
+    kpi1, kpi2, kpi3 = st.columns(3)  # Use st.columns instead of st.beta_columns
 
     with kpi1:
         st.markdown("**First KPI**")
@@ -49,7 +49,7 @@ def dashboard():
     st.markdown("## KPI Second Row")
 
     # KPI 2
-    kpi01, kpi02, kpi03, kpi04, kpi05 = st.columns(5)  # Updated to st.columns()
+    kpi01, kpi02, kpi03, kpi04, kpi05 = st.columns(5)  # Use st.columns instead of st.beta_columns
 
     with kpi01:
         st.markdown("**Another 1st KPI**")
@@ -81,7 +81,7 @@ def dashboard():
     st.markdown("## Chart Layout")
 
     # Chart layout
-    chart1, chart2 = st.columns(2)  # Updated to st.columns()
+    chart1, chart2 = st.columns(2)  # Use st.columns instead of st.beta_columns
 
     with chart1:
         chart_data = pd.DataFrame(np.random.randn(20, 3), columns=['a', 'b', 'c'])
