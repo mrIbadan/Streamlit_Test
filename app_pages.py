@@ -27,7 +27,7 @@ def dashboard():
     st.markdown("## KPI First Row")
 
     # KPI 1
-    kpi1, kpi2, kpi3 = st.columns(3)  # Use st.columns instead of st.beta_columns
+    kpi1, kpi2, kpi3 = st.columns(3)
 
     with kpi1:
         st.markdown("**First KPI**")
@@ -49,7 +49,7 @@ def dashboard():
     st.markdown("## KPI Second Row")
 
     # KPI 2
-    kpi01, kpi02, kpi03, kpi04, kpi05 = st.columns(5)  # Use st.columns instead of st.beta_columns
+    kpi01, kpi02, kpi03, kpi04, kpi05 = st.columns(5)
 
     with kpi01:
         st.markdown("**Another 1st KPI**")
@@ -81,7 +81,7 @@ def dashboard():
     st.markdown("## Chart Layout")
 
     # Chart layout
-    chart1, chart2 = st.columns(2)  # Use st.columns instead of st.beta_columns
+    chart1, chart2 = st.columns(2)
 
     with chart1:
         chart_data = pd.DataFrame(np.random.randn(20, 3), columns=['a', 'b', 'c'])
@@ -212,6 +212,7 @@ def maps():
     m = create_map(view_type, risk_type)
     st_folium(m, width=700, height=500)
 
+# Customer Sales Trend
 elif page == "Customer Sales Trend":
     st.title("Customer Sales Trend")
     # Generate random data for the customer sales trend
@@ -219,10 +220,4 @@ elif page == "Customer Sales Trend":
     customers_per_year = np.random.randint(100000, 500000, size=len(years))
 
     # Create a line chart for customer sales trend
-    fig, ax = plt.subplots(figsize=(8, 4))
-    ax.plot(years, customers_per_year, marker='o')
-    ax.set_xlabel('Year')
-    ax.set_ylabel('Number of Customers')
-    ax.set_title('Customer Sales Trend')
-
-    st.pyplot(fig)
+    fig, ax = plt
