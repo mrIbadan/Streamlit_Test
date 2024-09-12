@@ -7,10 +7,10 @@ from folium.features import GeoJsonTooltip
 from streamlit_folium import st_folium
 import matplotlib.pyplot as plt
 
-# General page config
+# Set page layout
 st.set_page_config(page_title="US Risk Dashboard", layout="wide")
 
-# Custom CSS for dashboard layout
+# CSS for layout and styling
 st.markdown(
     """
     <style>
@@ -23,15 +23,20 @@ st.markdown(
     }
     .header {
         text-align: center;
-        margin-top: 120px;  /* Push title below the logo */
+        margin-top: 120px;
         margin-bottom: 40px;
     }
     .main-content {
         display: flex;
     }
     .sidebar-content {
-        flex: 1;
+        flex: 0.5;
         padding: 20px;
+        max-width: 300px;
+    }
+    .map-container {
+        flex-grow: 2;
+        padding-left: 20px;
     }
     .metrics-box {
         background-color: #e1e5eb;
@@ -42,18 +47,14 @@ st.markdown(
     }
     .metrics-box h2 {
         margin: 0;
-        font-size: 20px;
+        font-size: 18px;
         color: #333;
     }
     .metrics-box p {
         margin: 5px 0 0;
-        font-size: 24px;
+        font-size: 20px;
         font-weight: bold;
         color: #007BFF;
-    }
-    .map-container {
-        flex-grow: 2;
-        padding: 20px;
     }
     </style>
     """,
@@ -84,8 +85,10 @@ roi = np.random.uniform(5, 20)  # Random ROI %
 customers = np.random.randint(100000, 500000)  # Random number of customers
 revenue = np.random.uniform(1, 5) * 1e6  # Random Revenue in $
 
-# Display KPI boxes on the left
+# Main content area
 st.markdown("<div class='main-content'>", unsafe_allow_html=True)
+
+# Display KPI boxes on the left
 st.markdown("<div class='sidebar-content'>", unsafe_allow_html=True)
 
 st.markdown(
@@ -109,9 +112,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
-# Close the sidebar container
-st.markdown("</div>", unsafe_allow_html=True)
 
 # Function to generate and return a Folium map
 def create_map(view_type, risk_type):
@@ -148,6 +148,7 @@ def create_map(view_type, risk_type):
 
     m = folium.Map(location=[37.0902, -95.7129], zoom_start=4, tiles="cartodbpositron")
 
+    # Inverted color scale: Red for high risk (> 5), Green for low risk (≤ 5)
     if risk_type == "Earthquake":
         risk_column = "Earthquake_Risk_Score"
         legend_name = "Earthquake Risk Score"
@@ -162,7 +163,7 @@ def create_map(view_type, risk_type):
             data=us_states_risk,
             columns=["NAME", risk_column],
             key_on="feature.properties.NAME",
-            fill_color="RdYlGn",
+            fill_color="RdYlGn_r",  # Reversed: Red for high risk, Green for low risk
             fill_opacity=0.7,
             line_opacity=0.2,
             legend_name=legend_name,
@@ -173,7 +174,7 @@ def create_map(view_type, risk_type):
             us_states_risk.__geo_interface__,
             name="State Tooltips",
             style_function=lambda feature: {
-                'fillColor': 'orange' if feature['properties'][risk_column] > 0 else 'white',
+                'fillColor': 'red' if feature['properties'][risk_column] > 5 else 'green',
                 'color': 'black',
                 'weight': 0.5,
                 'fillOpacity': 0.6,
@@ -192,7 +193,7 @@ def create_map(view_type, risk_type):
             data=us_counties_risk,
             columns=["NAME", risk_column],
             key_on="feature.properties.NAME",
-            fill_color="RdYlGn",
+            fill_color="RdYlGn_r",  # Reversed: Red for high risk, Green for low risk
             fill_opacity=0.7,
             line_opacity=0.2,
             legend_name=legend_name,
@@ -219,42 +220,31 @@ def create_map(view_type, risk_type):
 
     return m
 
-# Display the map on the right
+# Map on the right side
 st.markdown("<div class='map-container'>", unsafe_allow_html=True)
 view_type = st.sidebar.selectbox('Select View Type', ['State', 'County'])
 risk_type = st.sidebar.selectbox('Select Risk Type', ['Earthquake', 'Flood'])
 
+# Display the map
 m = create_map(view_type, risk_type)
 st_folium(m, width=700, height=500)
 
-# Customer Trend Line Chart
-st.markdown("<h3>Customer Sales Trend</h3>", unsafe_allow_html=True)
-
-years = [2020, 2021, 2022, 2023]
-customers_trend = np.random.randint(100000, 500000, size=len(years))
-
-fig, ax = plt.subplots()
-ax.plot(years, customers_trend, marker='o', color='blue')
-ax.set_xlabel("Year")
-ax.set_ylabel("Number of Customers")
-ax.set_title("Customer Sales Trend")
-
-st.pyplot(fig)
-
 st.markdown("</div>", unsafe_allow_html=True)
 
-# Footer style to hide Streamlit's default footer
-st.markdown(
-    """
-    <style>
-    .reportview-container .main footer {
-        visibility: hidden;
-    }
-    .reportview-container .main {
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+# Close main content div
+st.markdown("</div>", unsafe_allow_html=True)
+
+# Customer sales trend line chart
+st.markdown("<h3 style='text-align: left;'>Customer Sales Trend</h3>", unsafe_allow_html=True)
+
+# Sample line chart data
+dates = pd.date_range(start='1/1/2022', periods=12, freq='M')
+customers = np.random.randint(50000, 200000, size=12)
+
+fig, ax = plt.subplots(figsize=(10, 4))
+ax.plot(dates, customers, marker='o', color='#007BFF')
+ax.set_title('Customer Sales Trend', fontsize=16)
+ax.set_xlabel('Month')
+ax.set_ylabel('Number of Customers')
+
+st.pyplot(fig)
