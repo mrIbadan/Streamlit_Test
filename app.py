@@ -16,27 +16,21 @@ st.markdown(
     <style>
     .logo {
         position: absolute;
-        top: 10px;
+        top: 0;
         right: 20px;
         width: 120px;
         z-index: 100;
     }
     .header {
         text-align: center;
-        margin-top: 20px;
+        margin-top: 120px;  /* Push title below the logo */
         margin-bottom: 40px;
     }
     .main-content {
         display: flex;
-        justify-content: space-between;
     }
-    .sidebar .sidebar-content {
-        background-color: #f8f9fa;
-        padding: 20px;
-        border-radius: 10px;
-    }
-    .map-container {
-        flex-grow: 1;
+    .sidebar-content {
+        flex: 1;
         padding: 20px;
     }
     .metrics-box {
@@ -57,12 +51,16 @@ st.markdown(
         font-weight: bold;
         color: #007BFF;
     }
+    .map-container {
+        flex-grow: 2;
+        padding: 20px;
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Header and Logo Section
+# Logo and Title
 st.markdown(
     """
     <div class="header">
@@ -79,15 +77,16 @@ st.sidebar.markdown("<h3>Filter by Year</h3>", unsafe_allow_html=True)
 year = st.sidebar.selectbox('Select Year', [2020, 2021, 2022, 2023])
 
 # Generate random summary data for display
-np.random.seed(42)  # For consistent results
+np.random.seed(42)
 
 loss_ratio = np.random.uniform(0.1, 0.5) * 100  # Random Loss Ratio %
 roi = np.random.uniform(5, 20)  # Random ROI %
 customers = np.random.randint(100000, 500000)  # Random number of customers
 revenue = np.random.uniform(1, 5) * 1e6  # Random Revenue in $
 
-# Display the four summary boxes
+# Display KPI boxes on the left
 st.markdown("<div class='main-content'>", unsafe_allow_html=True)
+st.markdown("<div class='sidebar-content'>", unsafe_allow_html=True)
 
 st.markdown(
     f"""
@@ -110,6 +109,9 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+# Close the sidebar container
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Function to generate and return a Folium map
 def create_map(view_type, risk_type):
@@ -217,7 +219,7 @@ def create_map(view_type, risk_type):
 
     return m
 
-# Display the map
+# Display the map on the right
 st.markdown("<div class='map-container'>", unsafe_allow_html=True)
 view_type = st.sidebar.selectbox('Select View Type', ['State', 'County'])
 risk_type = st.sidebar.selectbox('Select Risk Type', ['Earthquake', 'Flood'])
