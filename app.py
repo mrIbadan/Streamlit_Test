@@ -32,6 +32,7 @@ st.markdown(
     .main-content {
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
     }
     .metrics-container {
         flex: 0.3;  /* Width of the KPI container */
@@ -110,62 +111,3 @@ st.markdown(
     </div>
     <div class='metrics-box'>
         <h2>Number of Customers</h2>
-        <p>{customers:,}</p>
-    </div>
-    <div class='metrics-box'>
-        <h2>Revenue ($)</h2>
-        <p>${revenue:,.2f}</p>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
-st.markdown("</div>", unsafe_allow_html=True)  # Close metrics container
-
-# Map on the right side
-st.markdown("<div class='map-container'>", unsafe_allow_html=True)
-view_type = st.sidebar.selectbox('Select View Type', ['State', 'County'])
-risk_type = st.sidebar.selectbox('Select Risk Type', ['Earthquake', 'Flood'])
-
-# Function to generate and return a Folium map
-def create_map(view_type, risk_type):
-    state_url = 'https://www2.census.gov/geo/tiger/GENZ2020/shp/cb_2020_us_state_20m.zip'
-    county_url = 'https://www2.census.gov/geo/tiger/GENZ2020/shp/cb_2020_us_county_20m.zip'
-
-    us_states = gpd.read_file(state_url)
-    us_counties = gpd.read_file(county_url)
-
-    np.random.seed(42)
-    states = us_states['NAME']
-    state_risk_scores = np.random.randint(1, 11, size=len(states))
-    state_flood_risk_scores = np.random.randint(1, 11, size=len(states))
-
-    random_state_risk_data = pd.DataFrame({
-        'NAME': states,
-        'Earthquake_Risk_Score': state_risk_scores,
-        'Flood_Risk_Score': state_flood_risk_scores
-    })
-
-    us_states_risk = us_states.merge(random_state_risk_data, on='NAME', how='left')
-
-    counties = us_counties['NAME']
-    county_risk_scores = np.random.randint(1, 11, size=len(counties))
-    county_flood_risk_scores = np.random.randint(1, 11, size=len(counties))
-
-    random_county_risk_data = pd.DataFrame({
-        'NAME': counties,
-        'Earthquake_Risk_Score': county_risk_scores,
-        'Flood_Risk_Score': county_flood_risk_scores
-    })
-
-    us_counties_risk = us_counties.merge(random_county_risk_data, on='NAME', how='left')
-
-    m = folium.Map(location=[37.0902, -95.7129], zoom_start=4, tiles="cartodbpositron")
-
-    # Inverted color scale: Red for high risk (> 5), Green for low risk (≤ 5)
-    if risk_type == "Earthquake":
-        risk_column = "Earthquake_Risk_Score"
-        legend_name = "Earthquake Risk Score"
-    else:
-        risk_column = "Flood_Risk_Score"
-        legend
