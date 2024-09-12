@@ -1,5 +1,4 @@
 setuptools
-GDAL>=3.0
 geopandas
 leafmap
 owslib
