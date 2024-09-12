@@ -1,4 +1,4 @@
---find-links=https://girder.github.io/large_image_wheels GDAL
+GDAL>=3.0
 geopandas
 leafmap
 owslib
