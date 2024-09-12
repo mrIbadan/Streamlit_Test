@@ -31,14 +31,11 @@ st.markdown(
         flex-direction: row;
     }
     .metrics-container {
-        flex: 0.3;
+        flex: 0.3;  /* Width of the KPI container */
         padding: 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
     }
     .map-container {
-        flex: 0.7;
+        flex: 0.7;  /* Width of the map container */
         padding-left: 10px;
     }
     .metrics-box {
@@ -91,7 +88,7 @@ revenue = np.random.uniform(1, 5) * 1e6  # Random Revenue in $
 # Main content area with KPI boxes and map side by side
 st.markdown("<div class='main-content'>", unsafe_allow_html=True)
 
-# Display KPI boxes on the left (smaller size)
+# Display KPI boxes on the left
 st.markdown("<div class='metrics-container'>", unsafe_allow_html=True)
 
 st.markdown(
@@ -235,7 +232,6 @@ m = create_map(view_type, risk_type)
 st_folium(m, width=700, height=500)
 
 st.markdown("</div>", unsafe_allow_html=True)  # Close map container
-
 st.markdown("</div>", unsafe_allow_html=True)  # Close main content
 
 # Customer Sales Trend line chart at the bottom
